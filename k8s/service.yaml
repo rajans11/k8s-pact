@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    application: pact-broker
+    area: ${NAMESPACE}
+    tier: local
+  name: ${ENVIRONMENT}-pact-broker
+  selfLink: /api/v1/namespaces/${NAMESPACE}/services/stubs-pact-broker
+  namespace: ${NAMESPACE}
+spec:
+  ports:
+  - name: pact
+    port: 9292
+    protocol: TCP
+    targetPort: 9292
+  selector:
+    application: pact-broker
+    area: ${NAMESPACE}
+    tier: local
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

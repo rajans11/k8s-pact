@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: ${NAMESPACE}
+  name: ${ENVIRONMENT}-pact-broker
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: pact-user-auth
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ok"
+spec:
+  rules:
+  - host: pact-broker.${NAMESPACE}.some.url
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: stubs-pact-broker
+          servicePort: 9292
+  tls:
+  - secretName: wildcard-tls
